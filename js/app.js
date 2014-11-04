@@ -6,6 +6,8 @@ var logicalOps = JSON.parse('[{"instruction":"ANL","oprands":"A,Rn","description
 
 var programbranchOps = JSON.parse('[{"instruction":"ACALL","oprands":"addr11","description":"Absolute Subroutine Call","oscillatorPeriod":24,"sizeInByte":2,"ID":0},{"instruction":"LCALL","oprands":"addr16","description":"Long Subroutine Call","oscillatorPeriod":24,"sizeInByte":3,"ID":1},{"instruction":"RET","oprands":"-","description":"Return from Subroutine","oscillatorPeriod":24,"sizeInByte":1,"ID":2},{"instruction":"RETI","oprands":"-","description":"Return from interrupt","oscillatorPeriod":24,"sizeInByte":1,"ID":3},{"instruction":"AJMP","oprands":"addr11","description":"Absolute Jump","oscillatorPeriod":24,"sizeInByte":2,"ID":4},{"instruction":"LJMP","oprands":"addr16","description":"Long Jump","oscillatorPeriod":24,"sizeInByte":3,"ID":5},{"instruction":"SJMP","oprands":"rel","description":"Short Jump (relative add)","oscillatorPeriod":24,"sizeInByte":2,"ID":6},{"instruction":"JMP","oprands":"@A+DPTR","description":"Jump indirect relative to the DPTR","oscillatorPeriod":24,"sizeInByte":1,"ID":7},{"instruction":"JZ","oprands":"rel","description":"Jump if Accumulator is Zero","oscillatorPeriod":24,"sizeInByte":2,"ID":8},{"instruction":"JNZ","oprands":"rel","description":"Jump if Accumulator is Not Zero","oscillatorPeriod":24,"sizeInByte":2,"ID":9},{"instruction":"CJNE","oprands":"A,direct,rel","description":"Compare direct byte to Acc and Jump if Not Equal","oscillatorPeriod":24,"sizeInByte":3,"ID":10},{"instruction":"CJNE","oprands":"A,#data,rel","description":"Compare immediate to Acc and Jump if Not Equal","oscillatorPeriod":24,"sizeInByte":3,"ID":11},{"instruction":"CJNE","oprands":"Rn,#data,rel","description":"Compare immediate to register and Jump if Not Equal","oscillatorPeriod":24,"sizeInByte":3,"ID":12},{"instruction":"CJNE","oprands":"@Ri,#data,rel","description":"Compare immediate to indirect and Jump if Not Equal","oscillatorPeriod":24,"sizeInByte":3,"ID":13},{"instruction":"DJNZ","oprands":"Rn,rel","description":"Decrement register and Jump if Not Zero","oscillatorPeriod":24,"sizeInByte":2,"ID":14},{"instruction":"DJNZ","oprands":"direct,rel","description":"Decrement direct byte and Jump if Not Zero","oscillatorPeriod":24,"sizeInByte":3,"ID":15},{"instruction":"NOP","oprands":"-","description":"No Operation","oscillatorPeriod":12,"sizeInByte":1,"ID":16}]');
 
+var booleanVarOps = JSON.parse('[{"instruction":"CLR","oprands":"C","description":"Clear Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":0},{"instruction":"CLR","oprands":"bit","description":"Clear direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":1},{"instruction":"SETB","oprands":"C","description":"Set Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":2},{"instruction":"SETB","oprands":"bit","description":"Set direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":3},{"instruction":"CPL","oprands":"C","description":"Complement Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":4},{"instruction":"CPL","oprands":"bit","description":"Complement direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":5},{"instruction":"ANL","oprands":"C,bit","description":"AND direct bit to carry","oscillatorPeriod":24,"sizeInByte":2,"ID":6},{"instruction":"ANL","oprands":"C,/bit","description":"AND complement of direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":7},{"instruction":"ORL","oprands":"C,bit","description":"OR direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":8},{"instruction":"ORL","oprands":"C,/bit","description":"OR complement of direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":9},{"instruction":"MOV","oprands":"C,bit","description":"Move direct bit to Carry","oscillatorPeriod":12,"sizeInByte":2,"ID":10},{"instruction":"MOV","oprands":"bit,C","description":"Move Carry to direct bit","oscillatorPeriod":24,"sizeInByte":2,"ID":11},{"instruction":"JC","oprands":"rel","description":"Jump if Carry is set","oscillatorPeriod":24,"sizeInByte":2,"ID":12},{"instruction":"JNC","oprands":"rel","description":"Jump if Carry not set","oscillatorPeriod":24,"sizeInByte":2,"ID":13},{"instruction":"JB","oprands":"bit.rel","description":"Jump if direct bit set","oscillatorPeriod":24,"sizeInByte":3,"ID":14},{"instruction":"JNB","oprands":"bit,rel","description":"Jump if direct Bit is Not set","oscillatorPeriod":24,"sizeInByte":3,"ID":15},{"instruction":"JBC","oprands":"bit,rel","description":"Jump if direct bit is set \u0026 clear bit","oscillatorPeriod":24,"sizeInByte":3,"ID":16}]');
+
 // Create index instance
 var index = lunr( function() {
     this.field('inst')
@@ -90,6 +92,17 @@ logicalOps.forEach( function( inst ) {
 var probranch_inst = $('#probranch_inst');
 programbranchOps.forEach( function( inst ) {
     probranch_inst.append( craftTableRow(
+        inst.instruction,
+        inst.oprands,
+        inst.description,
+        inst.sizeInByte,
+        inst.oscillatorPeriod
+    ));
+});
+
+var booleanvar_inst = $('#booleanvar_inst');
+booleanVarOps.forEach( function( inst ) {
+    booleanvar_inst.append( craftTableRow(
         inst.instruction,
         inst.oprands,
         inst.description,
