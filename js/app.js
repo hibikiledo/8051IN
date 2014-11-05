@@ -340,44 +340,59 @@ function updateTables( query ) {
 //  Implement Scrolling
 //------------------------------------------------------------------------------------------------------
 
+function viewSpecificTable( table ) {
+    hideAllTableAndData();
+    
+    switch( table.attr('id') )
+    {
+        case 'arith_table': 
+            arith_inst.children().show();       
+            break;
+        case 'logical_table': 
+            logical_inst.children().show();    
+            break;
+        case 'data_table': 
+            data_inst.children().show(); 
+            break;
+        case 'booleanvar_table': 
+            booleanvar_inst.children().show(); 
+            break;
+        case 'probranch_table': 
+            probranch_inst.children().show(); 
+            break;
+    }
+    
+    table.fadeIn();    
+}
+
 $('#arith_grp').click(function(e) {
-    e.preventDefault();
-    showAllTableAndData();
-    $('html, body').animate({
-        scrollTop: arithTable.offset().top  + (-50)
-    }, 1000);  
+    e.preventDefault();    
+    viewSpecificTable( arithTable );
 });
 
 $('#logical_grp').click(function(e) {
     e.preventDefault();
-    showAllTableAndData();
-    $('html, body').animate({
-        scrollTop: logicalTable.offset().top + (-50)
-    }, 1000);  
+    viewSpecificTable( logicalTable );
 });
 
 $('#data_grp').click(function(e) {
     e.preventDefault();
-    showAllTableAndData();
-    $('html, body').animate({
-        scrollTop: dataTable.offset().top  + (-50)
-    }, 1000);  
+    viewSpecificTable( dataTable );
 });
 
 $('#booleanvar_grp').click(function(e) {
     e.preventDefault();
-    showAllTableAndData();
-    $('html, body').animate({
-        scrollTop: booleanvarTable.offset().top  + (-50)
-    }, 1000);  
+    viewSpecificTable( booleanvarTable );
 });
 
 $('#probranch_grp').click(function(e) {
     e.preventDefault();
+    viewSpecificTable( probranchTable );
+});
+
+$('#all_grp').click(function(e) {
+    e.preventDefault();
     showAllTableAndData();
-    $('html, body').animate({
-        scrollTop: probranchTable.offset().top  + (-50)
-    }, 1000);  
 });
 
 
