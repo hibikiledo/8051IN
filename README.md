@@ -20,6 +20,7 @@ The project is a website that do the followings.
 
 The website groups related instructions together in groups called "Instruction Group".
 User can easily get to specific group by opening the sidebar and clicking at the group link.  
+
 **That was fast~!!**
 
 Moreover, searching allows user to get to specific instruction *extremely* fast.
@@ -35,6 +36,18 @@ This project make uses of
 * lunr.js - full-text search library 
 * retina.js - retina display support for images
 * simple-sidebar - simple and clean sidebar
+* 
+###Wanna try ?
+
+[8051IN @ hibikiledo.me](http://8051.hibikiledo.me)
+
+###Found bugs ?
+
+Please let me know.
+
+###Reference
+
+The information used in website is based on [atmel](http://www.atmel.com/images/doc0509.pdf).
 
 ----------
 
