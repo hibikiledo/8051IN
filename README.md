@@ -36,7 +36,7 @@ This project make uses of
 * lunr.js - full-text search library 
 * retina.js - retina display support for images
 * simple-sidebar - simple and clean sidebar
-* 
+
 ###Wanna try ?
 
 [8051IN @ hibikiledo.me](http://8051.hibikiledo.me)
