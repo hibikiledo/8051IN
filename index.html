@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">        
     <!-- Include Simple Sidebar Css-->
     <link rel="stylesheet" href="css/simple-sidebar.css">
+    <!-- Include overriding style -->
+    <link rel="stylesheet" href="css/override.css">
     
 </head>
     
@@ -21,181 +23,197 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    8051IN<small>struction</small>
+                    Instruction Groups
                 </li>
                 <li>
-                    <a href="#">Arithmetic Operations</a>                    
+                    <a href="#" id="arith_grp">Arithmetic Operations</a>                    
                 </li>
                 <li>
-                    <a href="#">Logical Operations</a>                    
+                    <a href="#" id="logical_grp">Logical Operations</a>                    
                 </li>
                 <li>
-                    <a href="#">Data Transfer</a>                    
+                    <a href="#" id="data_grp">Data Transfer</a>                    
                 </li>
                 <li>
-                    <a href="#">Boolean Variable Manipulation</a>                    
+                    <a href="#" id="booleanvar_grp">Boolean Variable Manipulation</a>                    
                 </li>
                 <li>
-                    <a href="#">Program Branching</a>
+                    <a href="#" id="probranch_grp">Program Branching</a>
                 </li>
-            </ul>
+            </ul>              
         </div> 
+        
+        
         <!-- /#sidebar -->
         
         <!-- Content -->
         <div id="page-content-wrapper">
+            
+            
+            
             <div class="container-fluid">
                 
                 <!-- Top menu -->
-                <div class="row">
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-default" id="viewinstgrp">
-                            Show Instruction Group
-                        </button>
-                    </div>
-                    <div class="col-md-10">
-                        <ul class="nav navbar-right nav-pills">
-                            <li role="presentation" class="active"><a href="#">Search</a></li>
-                            <li role="presentation"><a href="#">About</a></li>
+                <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="#">8051IN<small>struction</small></a>                     
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">Search</a></li>
+                            <li><a href="#">About</a></li>                          
+                        </ul>     
+                        <ul class="nav navbar-nav navbar-right">
+                            <button type="button" class="btn btn-default navbar-btn" id="viewinstgrp" style="margin-right:8px">
+                                Show Instriction Group
+                            </button> 
                         </ul>
-                    </div>
-                </div>
+                    </div>                   
+                </nav>
                 <!-- /#Top menu -->
                 
                 <!-- Logo -->
                 <div class="row">                    
-                    <div class="col-md-12">
-                        <img src="assets/logo.jpg" class="center-block">       
+                    <div class="col-xs-12">
+                        <img src="assets/logo.png" class="center-block">       
                     </div>
                 </div>
                 <!-- /#Logo -->
                 
                 <!-- Search form -->
-                <div class="row">
-                    <div class="col-md-3 col-md-offset-4">
-                        <input type="text" class="form-control" placeholder="Search instruction ..">       
+                <div class="row" style="padding-bottom: 30px">
+                    <div class="col-md-4 col-md-offset-4">
+                        <div class="input-group">                          
+                            <input type="text" class="form-control" placeholder="Search instruction .." id="inputField">
+                            <span class="input-group-btn">
+                                <button class="btn btn-info" id="searchBtn" type="button">Search</button>
+                            </span>
+                        </div>
                     </div>
-                    <button class="btn btn-info">Search</button>               
-                </div>                
+                </div>  
+
                 <!-- /#Search form -->
                 
+                <!-- System message -->
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="alert alert-danger" style="display: none" role="alert" id="system-msg"></div>   
+                    </div>
+                </div>
+                <!-- /#System message -->
+                
                 <!-- Instruction Table -->
-                <div class="col-md-8 col-md-offset-2" style="padding-top: 30px">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Arithmetic Operations</div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Instruction</th>
-                                        <th>Operand(s)</th>
-                                        <th>Description</th>
-                                        <th>Byte(s)</th>
-                                        <th>Oscillator Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="arith_inst">
-                                    <!-- To be filled by using JS -->
-                                                                      
-                                </tbody>
-                            </table>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1" style="padding-top: 10px" id="arith_table">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Arithmetic Operations</div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Instruction</th>
+                                            <th>Operand(s)</th>
+                                            <th>Description</th>
+                                            <th>Byte(s)</th>
+                                            <th>Oscillator Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="arith_inst">
+                                        <!-- To be filled by using JS -->
+
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div>   
-                
-                 <div class="col-md-8 col-md-offset-2" style="padding-top: 10px">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Logical Operations</div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Instruction</th>
-                                        <th>Operand(s)</th>
-                                        <th>Description</th>
-                                        <th>Byte(s)</th>
-                                        <th>Oscillator Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="logical_inst">
-                                    <!-- To be filled by using JS -->
-                                                                      
-                                </tbody>
-                            </table>
+                    </div>   
+
+                     <div class="col-md-10 col-md-offset-1" style="padding-top: 10px" id="logical_table">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Logical Operations</div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Instruction</th>
+                                            <th>Operand(s)</th>
+                                            <th>Description</th>
+                                            <th>Byte(s)</th>
+                                            <th>Oscillator Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="logical_inst">
+                                        <!-- To be filled by using JS -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div>   
-                
-                <div class="col-md-8 col-md-offset-2" style="padding-top: 10px">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Data Transfer</div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Instruction</th>
-                                        <th>Operand(s)</th>
-                                        <th>Description</th>
-                                        <th>Byte(s)</th>
-                                        <th>Oscillator Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="data_inst">
-                                    <!-- To be filled by using JS -->
-                                                                       
-                                </tbody>
-                            </table>
+                    </div>   
+
+                    <div class="col-md-10 col-md-offset-1" style="padding-top: 10px" id="data_table">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Data Transfer</div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Instruction</th>
+                                            <th>Operand(s)</th>
+                                            <th>Description</th>
+                                            <th>Byte(s)</th>
+                                            <th>Oscillator Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data_inst">
+                                        <!-- To be filled by using JS -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div> 
-                
-                <div class="col-md-8 col-md-offset-2" style="padding-top: 10px">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Boolean Variable Manipulation</div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Instruction</th>
-                                        <th>Operand(s)</th>
-                                        <th>Description</th>
-                                        <th>Byte(s)</th>
-                                        <th>Oscillator Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="booleanvar_inst">
-                                    <!-- To be filled by using JS -->
-                                                                 
-                                </tbody>
-                            </table>
+                    </div> 
+
+                    <div class="col-md-10 col-md-offset-1" style="padding-top: 10px" id="booleanvar_table">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Boolean Variable Manipulation</div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Instruction</th>
+                                            <th>Operand(s)</th>
+                                            <th>Description</th>
+                                            <th>Byte(s)</th>
+                                            <th>Oscillator Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="booleanvar_inst">
+                                        <!-- To be filled by using JS -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div> 
-                
-                <div class="col-md-8 col-md-offset-2" style="padding-top: 10px">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Program Branching</div>
-                        <div class="panel-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Instruction</th>
-                                        <th>Operand(s)</th>
-                                        <th>Description</th>
-                                        <th>Byte(s)</th>
-                                        <th>Oscillator Period</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="probranch_inst">
-                                    <!-- To be filled by using JS -->
-                                                                 
-                                </tbody>
-                            </table>
+                    </div> 
+
+                    <div class="col-md-10 col-md-offset-1" style="padding-top: 10px" id="probranch_table">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Program Branching</div>
+                            <div class="panel-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Instruction</th>
+                                            <th>Operand(s)</th>
+                                            <th>Description</th>
+                                            <th>Byte(s)</th>
+                                            <th>Oscillator Period</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="probranch_inst">
+                                        <!-- To be filled by using JS -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                </div> 
-                <!-- /#Instruction Table -->
-                
+                    </div> 
+                </div>
+                <!-- /#Instruction Table -->            
                 
             </div>
         </div>
@@ -207,8 +225,10 @@
     <!-- Include Scripts -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/retina.min.js"></script>
     <script src="js/lunr.js"></script>
     <script src="js/app.js"></script>
+    
     <!-- Implement hide/show sidebar button -->
     <script>
         var viewinstgrp = $('#viewinstgrp');
@@ -222,12 +242,36 @@
             wrapper.toggleClass('toggled');            
             
             setTimeout(function() {
-               if(wrapper.hasClass('toggled')) {
-                    viewinstgrp.text('Show Instruction Group');   
+                if( $(window).width() < 768 ) {
+                   if(wrapper.hasClass('toggled')) {
+                        viewinstgrp.text('Hide Instriction Group');   
+                    } else {
+                        viewinstgrp.text('Show Instriction Group');
+                    }
                 } else {
-                    viewinstgrp.text('Hide Instruction Group');
+                    if(wrapper.hasClass('toggled')) {
+                        viewinstgrp.text('Show Instriction Group');   
+                    } else {
+                        viewinstgrp.text('Hide Instriction Group');
+                    }
                 }
-            }, 250);
+            }, 100);
+        });
+                
+        $( window ).resize(function(e) {
+             if( $(window).width() < 768 ) {
+                 if( wrapper.hasClass('toggled') ) {
+                    viewinstgrp.text('Hide Instriction Group');   
+                 } else {
+                    viewinstgrp.text('Show Instriction Group'); 
+                 }
+             } else {
+                 if( wrapper.hasClass('toggled') ) {
+                    viewinstgrp.text('Show Instriction Group');   
+                 } else {
+                    viewinstgrp.text('Hide Instriction Group'); 
+                 }
+             }
         });
     </script>
     

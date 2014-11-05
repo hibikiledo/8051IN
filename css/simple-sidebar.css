@@ -81,8 +81,8 @@
 }
 
 .sidebar-nav > .sidebar-brand {
-    height: 65px;
-    font-size: 22px;
+    height: 60px;
+    font-size: 18px;
     line-height: 60px;
     color: #999999;
 }
@@ -95,6 +95,16 @@
     color: #fff;
     background: none;
 }
+
+#show-hide-btn {
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    position: relative;
+    left: 250px;
+    top: 50%;
+}
+
 
 @media(min-width:768px) {
     #wrapper {
