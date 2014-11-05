@@ -368,31 +368,49 @@ function viewSpecificTable( table ) {
 $('#arith_grp').click(function(e) {
     e.preventDefault();    
     viewSpecificTable( arithTable );
+    $('html, body').animate({
+       scrollTop: arithTable.offset().top  + (-50)
+    }, 500); 
 });
 
 $('#logical_grp').click(function(e) {
     e.preventDefault();
     viewSpecificTable( logicalTable );
+    $('html, body').animate({
+       scrollTop: logicalTable.offset().top  + (-50)
+    }, 500); 
 });
 
 $('#data_grp').click(function(e) {
     e.preventDefault();
     viewSpecificTable( dataTable );
+    $('html, body').animate({
+       scrollTop: dataTable.offset().top  + (-50)
+    }, 500); 
 });
 
 $('#booleanvar_grp').click(function(e) {
     e.preventDefault();
     viewSpecificTable( booleanvarTable );
+    $('html, body').animate({
+       scrollTop: booleanvarTable.offset().top  + (-50)
+    }, 500); 
 });
 
 $('#probranch_grp').click(function(e) {
     e.preventDefault();
     viewSpecificTable( probranchTable );
+    $('html, body').animate({
+        scrollTop: probranchTable.offset().top  + (-50)
+    }, 500); 
 });
 
 $('#all_grp').click(function(e) {
-    e.preventDefault();
+    e.preventDefault();    
     showAllTableAndData();
+    $('html, body').animate({
+       scrollTop: arithTable.offset().top  + (-50)
+    }, 500); 
 });
 
 
