@@ -9,32 +9,56 @@ var programbranchOps = JSON.parse('[{"instruction":"ACALL","oprands":"addr11","d
 var booleanVarOps = JSON.parse('[{"instruction":"CLR","oprands":"C","description":"Clear Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":0},{"instruction":"CLR","oprands":"bit","description":"Clear direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":1},{"instruction":"SETB","oprands":"C","description":"Set Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":2},{"instruction":"SETB","oprands":"bit","description":"Set direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":3},{"instruction":"CPL","oprands":"C","description":"Complement Carry","oscillatorPeriod":12,"sizeInByte":1,"ID":4},{"instruction":"CPL","oprands":"bit","description":"Complement direct bit","oscillatorPeriod":12,"sizeInByte":2,"ID":5},{"instruction":"ANL","oprands":"C,bit","description":"AND direct bit to carry","oscillatorPeriod":24,"sizeInByte":2,"ID":6},{"instruction":"ANL","oprands":"C,/bit","description":"AND complement of direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":7},{"instruction":"ORL","oprands":"C,bit","description":"OR direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":8},{"instruction":"ORL","oprands":"C,/bit","description":"OR complement of direct bit to Carry","oscillatorPeriod":24,"sizeInByte":2,"ID":9},{"instruction":"MOV","oprands":"C,bit","description":"Move direct bit to Carry","oscillatorPeriod":12,"sizeInByte":2,"ID":10},{"instruction":"MOV","oprands":"bit,C","description":"Move Carry to direct bit","oscillatorPeriod":24,"sizeInByte":2,"ID":11},{"instruction":"JC","oprands":"rel","description":"Jump if Carry is set","oscillatorPeriod":24,"sizeInByte":2,"ID":12},{"instruction":"JNC","oprands":"rel","description":"Jump if Carry not set","oscillatorPeriod":24,"sizeInByte":2,"ID":13},{"instruction":"JB","oprands":"bit.rel","description":"Jump if direct bit set","oscillatorPeriod":24,"sizeInByte":3,"ID":14},{"instruction":"JNB","oprands":"bit,rel","description":"Jump if direct Bit is Not set","oscillatorPeriod":24,"sizeInByte":3,"ID":15},{"instruction":"JBC","oprands":"bit,rel","description":"Jump if direct bit is set \u0026 clear bit","oscillatorPeriod":24,"sizeInByte":3,"ID":16}]');
 
 // Create index instance
-var index = lunr( function() {
+var arithmeticIndex = lunr( function() {
     this.field('inst')
     this.ref('id')
 });
-
-// Add all instructions for indexing
 arithmeticOps.forEach(function( obj ) {
-    index.add({
+    arithmeticIndex.add({
         id: obj.ID,
         inst: obj.instruction
     }); 
+});
+
+var datatransferIndex = lunr( function() {
+    this.field('inst')
+    this.ref('id')
 });
 datatransferOps.forEach(function( obj ) {
-    index.add({
+    datatransferIndex.add({
         id: obj.ID,
         inst: obj.instruction
     }); 
+});
+
+var logicalIndex = lunr( function() {
+    this.field('inst')
+    this.ref('id')
 });
 logicalOps.forEach(function( obj ) {
-    index.add({
+    logicalIndex.add({
         id: obj.ID,
         inst: obj.instruction
     }); 
 });
+
+var programbranchIndex = lunr( function() {
+    this.field('inst')
+    this.ref('id')
+});
 programbranchOps.forEach(function( obj ) {
-    index.add({
+    programbranchIndex.add({
+        id: obj.ID,
+        inst: obj.instruction
+    }); 
+});
+
+var booleanvarIndex = lunr( function() {
+    this.field('inst')
+    this.ref('id')
+});
+booleanVarOps.forEach(function( obj ) {
+    booleanvarIndex.add({
         id: obj.ID,
         inst: obj.instruction
     }); 
@@ -44,8 +68,9 @@ programbranchOps.forEach(function( obj ) {
 //  Table Initialization
 //------------------------------------------------------------------------------------------------------
 
-function craftTableRow(inst, oprand, des, byte, oscPeriod) {
+function craftTableRow(inst, oprand, des, byte, oscPeriod, id) {
     var trElement = $('<tr>');
+    trElement.attr('refid', id);
     trElement.append($('<td>').text(inst));
     trElement.append($('<td>').text(oprand));
     trElement.append($('<td>').text(des));
@@ -63,7 +88,8 @@ arithmeticOps.forEach( function( inst ) {
         inst.oprands,
         inst.description,
         inst.sizeInByte,
-        inst.oscillatorPeriod
+        inst.oscillatorPeriod,
+        inst.ID
     ));
 });
 
@@ -74,7 +100,8 @@ datatransferOps.forEach( function( inst ) {
         inst.oprands,
         inst.description,
         inst.sizeInByte,
-        inst.oscillatorPeriod     
+        inst.oscillatorPeriod,
+        inst.ID   
     ));
 });
 
@@ -85,7 +112,8 @@ logicalOps.forEach( function( inst ) {
         inst.oprands,
         inst.description,
         inst.sizeInByte,
-        inst.oscillatorPeriod
+        inst.oscillatorPeriod,
+        inst.ID
     ));
 });
 
@@ -96,7 +124,8 @@ programbranchOps.forEach( function( inst ) {
         inst.oprands,
         inst.description,
         inst.sizeInByte,
-        inst.oscillatorPeriod
+        inst.oscillatorPeriod,
+        inst.ID
     ));
 });
 
@@ -107,6 +136,248 @@ booleanVarOps.forEach( function( inst ) {
         inst.oprands,
         inst.description,
         inst.sizeInByte,
-        inst.oscillatorPeriod
+        inst.oscillatorPeriod,
+        inst.ID
     ));
 });
+
+//------------------------------------------------------------------------------------------------------
+//  Implement Searching
+//------------------------------------------------------------------------------------------------------
+
+// Retrieve form related element
+var searchBtn = $('#searchBtn');
+var inputField = $('#inputField');
+
+// retrieve tables
+var arithTable = $('#arith_table');
+var logicalTable = $('#logical_table');
+var dataTable = $('#data_table');
+var booleanvarTable = $('#booleanvar_table');
+var probranchTable = $('#probranch_table');
+
+var systemMsg = $('#system-msg');
+
+
+// Implement event handler for search button
+searchBtn.click(function(e) {
+   handleSearchEvent(e);    
+});
+
+inputField.keypress(function(e) {
+    // check for enter key press
+    if( e.which == 13 ) {
+        handleSearchEvent(e);   
+    }
+});
+
+function handleSearchEvent( e ) {
+     e.preventDefault();
+    
+    var query = inputField.val();
+    
+    if( query.length > 0 ) {
+        hideAllTableAndData();
+        var found = updateTables( query );
+        
+        if(!found) {
+            systemMsg.text('The instruction "' + query + '" does NOT exist.');
+            systemMsg.fadeIn();
+        } else {
+            systemMsg.hide();   
+        }
+        
+    } else {
+        showAllTableAndData();  
+    }   
+}
+
+function hideAllTableAndData() {
+    // hide arith table
+    arithTable.hide();
+    arith_inst.children().hide();
+    
+    // hide logical table
+    logicalTable.hide();
+    logical_inst.children().hide();
+    
+    // hide data table
+    dataTable.hide();
+    data_inst.children().hide();
+    
+    // hide boolean var table
+    booleanvarTable.hide();
+    booleanvar_inst.children().hide();
+    
+    // hide program branch table
+    probranchTable.hide();
+    probranch_inst.children().hide();    
+}
+
+function showAllTableAndData() {
+    
+    // hide system message
+    systemMsg.hide();
+    
+    // show elements
+    arith_inst.children().show();
+    logical_inst.children().show();
+    data_inst.children().show();
+    booleanvar_inst.children().show();
+    probranch_inst.children().show(); 
+    
+    // show tables
+    arithTable.fadeIn();
+    logicalTable.fadeIn();
+    dataTable.fadeIn();
+    booleanvarTable.fadeIn();
+    probranchTable.fadeIn();
+     
+}
+
+function updateTables( query ) {
+    
+    var isFound = false;
+    
+    // Handler for arithmetic table
+    var matchedResult = arithmeticIndex.search( query );
+    console.log( matchedResult );
+    
+    // result available in arithmetic table
+    if( matchedResult.length != 0 ) {        
+        var data = arith_inst.children();   
+        // show matched instruction
+        matchedResult.forEach(function(obj) {
+            $(data[ obj.ref ]).show();         
+        });
+        // show table
+        arithTable.fadeIn();
+        
+        isFound = true;
+    }
+    
+    //-----------------------------------------------------
+    
+    // Handler for arithmetic table
+    var matchedResult = logicalIndex.search( query );
+    console.log( matchedResult );
+    
+    // result available in arithmetic table
+    if( matchedResult.length != 0 ) {
+        var data = logical_inst.children();   
+        // show matched instruction
+        matchedResult.forEach(function(obj) {
+            $(data[ obj.ref ]).show();         
+        });
+        // show table
+        logicalTable.fadeIn();
+        
+        isFound = true;
+    }
+    
+    //-----------------------------------------------------
+    
+    // Handler for data table
+    var matchedResult = datatransferIndex.search( query );
+    console.log( matchedResult );
+    
+    // result available in arithmetic table
+    if( matchedResult.length != 0 ) {
+        var data = data_inst.children();   
+        // show matched instruction
+        matchedResult.forEach(function(obj) {
+            $(data[ obj.ref ]).show();         
+        });
+        // show table
+        dataTable.fadeIn();
+        
+        isFound = true;
+    }
+    
+    //-----------------------------------------------------
+    
+    // Handler for boolean var table
+    var matchedResult = booleanvarIndex.search( query );
+    console.log( matchedResult );
+    
+    // result available in arithmetic table
+    if( matchedResult.length != 0 ) {
+        var data = booleanvar_inst.children();   
+        // show matched instruction
+        matchedResult.forEach(function(obj) {
+            $(data[ obj.ref ]).show();         
+        });
+        // show table
+        booleanvarTable.fadeIn();
+        
+        isFound = true;
+    }
+    
+    //-----------------------------------------------------
+    
+    // Handler for program branch table
+    var matchedResult = programbranchIndex.search( query );
+    console.log( matchedResult );
+    
+    // result available in arithmetic table
+    if( matchedResult.length != 0 ) {
+        var data = probranch_inst.children();   
+        // show matched instruction
+        matchedResult.forEach(function(obj) {
+            $(data[ obj.ref ]).show();         
+        });
+        // show table
+        probranchTable.fadeIn();
+        
+        isFound = true;
+    }    
+    
+    return isFound;
+    
+}
+
+//------------------------------------------------------------------------------------------------------
+//  Implement Scrolling
+//------------------------------------------------------------------------------------------------------
+
+$('#arith_grp').click(function(e) {
+    e.preventDefault();
+    showAllTableAndData();
+    $('html, body').animate({
+        scrollTop: arithTable.offset().top  + (-50)
+    }, 1000);  
+});
+
+$('#logical_grp').click(function(e) {
+    e.preventDefault();
+    showAllTableAndData();
+    $('html, body').animate({
+        scrollTop: logicalTable.offset().top + (-50)
+    }, 1000);  
+});
+
+$('#data_grp').click(function(e) {
+    e.preventDefault();
+    showAllTableAndData();
+    $('html, body').animate({
+        scrollTop: dataTable.offset().top  + (-50)
+    }, 1000);  
+});
+
+$('#booleanvar_grp').click(function(e) {
+    e.preventDefault();
+    showAllTableAndData();
+    $('html, body').animate({
+        scrollTop: booleanvarTable.offset().top  + (-50)
+    }, 1000);  
+});
+
+$('#probranch_grp').click(function(e) {
+    e.preventDefault();
+    showAllTableAndData();
+    $('html, body').animate({
+        scrollTop: probranchTable.offset().top  + (-50)
+    }, 1000);  
+});
+
+
