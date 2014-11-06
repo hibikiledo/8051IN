@@ -38,12 +38,6 @@
                 <li>
                     <a href="#">Program Branching</a>
                 </li>
-                <br>
-                <!-- to be in another class -->
-                <li>
-                    <a href="#">About</a>                    
-                </li>            
-                
             </ul>
         </div> 
         <!-- /#sidebar -->
@@ -53,7 +47,12 @@
             <div class="container-fluid">
                 
                 <!-- Top menu -->
-                <div class="row">                  
+                <div class="row">
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-default" id="viewinstgrp">
+                            <span class="glyphicon glyphicon-align-justify"></span>    
+                        </button>
+                    </div>
                     <div class="col-md-10">
                         <ul class="nav navbar-right nav-pills">
                             <li role="presentation" class="active"><a href="#">Search</a></li>
@@ -82,7 +81,7 @@
                 <!-- /#Search form -->
                 
                 <!-- Instruction Table -->
-                <div class="col-md-8 col-md-offset-2" style="padding-top: 30px ">
+                <div class="col-md-8 col-md-offset-2" style="padding-top: 30px">
                     <div class="panel panel-default">
                         <div class="panel-heading">Arithmetic Operations</div>
                         <div class="panel-body">
@@ -213,11 +212,13 @@
     <script src="js/app.js"></script>
     <!-- Implement hide/show sidebar button -->
     <script>
-        var viewinstgrp = $('#sidebar-wrapper');
+        var viewinstgrp = $('#viewinstgrp');
         var wrapper = $('#wrapper');
         
-        viewinstgrp.hover(function(e) {
-            e.preventDefault();        
+        viewinstgrp.click(function(e) {
+            e.preventDefault();
+            var wrapper = $('#wrapper');
+            
             // Change text in button appropriately
             wrapper.toggleClass('toggled');            
         });
