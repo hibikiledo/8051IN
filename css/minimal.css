@@ -1,4 +1,12 @@
-    .animate {
+    .bigfont-wrapper{
+        font-family: sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        position: absolute;
+        text-align: center;
+    
+    }
+.animate {
 		-webkit-transition: all 0.3s ease-in-out;
 		-moz-transition: all 0.3s ease-in-out;
 		-o-transition: all 0.3s ease-in-out;
@@ -108,7 +116,7 @@
 		-moz-transform: rotate(-180deg);
 		-o-transform: rotate(-180deg);
 		-ms-transform: rotate(-180deg);
-		transform: rotate(-180deg);
+		transform: rotate(-90deg);
 	}
 
 	.navbar-minimal.open > .navbar-menu {
