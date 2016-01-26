@@ -39,7 +39,7 @@ This project make uses of
 
 ###Wanna try ?
 
-[8051IN @ hibikiledo.me](http://8051.hibikiledo.me)
+[8051IN @ hibikiledo.me](http://8051in.hibikiledo.me/)
 
 ###Found bugs ?
 
